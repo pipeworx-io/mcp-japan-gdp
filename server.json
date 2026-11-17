@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.pipeworx-io/japan-gdp",
+  "title": "Japan Gdp",
+  "description": "Japan quarterly GDP estimates MCP. Keyless, fetched live per call.",
+  "version": "0.1.0",
+  "websiteUrl": "https://pipeworx.io/packs/japan-gdp",
+  "repository": {
+    "url": "https://github.com/pipeworx-io/mcp-japan-gdp",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://gateway.pipeworx.io/japan-gdp/mcp"
+    }
+  ]
+}

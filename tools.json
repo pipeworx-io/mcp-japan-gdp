@@ -1,0 +1,85 @@
+[
+  {
+    "name": "jp_gdp_latest",
+    "description": "Japan's latest quarterly GDP estimate from the Cabinet Office (Government of Japan), expenditure approach. Returns the release date, the quarter covered, the estimate stage (first or second preliminary), and for that quarter: real and nominal GDP growth quarter-on-quarter and annualized, with components (private consumption, private non-residential investment, exports, imports and more), plus real contributions to annualized growth. Figures are seasonally adjusted. Answers questions like 'Japan GDP growth July-September 2026'. Honest limit: a preliminary estimate is revised (a second preliminary follows about three weeks later and seasonally adjusted history is re-estimated each release); expenditure approach only, no industry breakdown. Optional release_date (YYYY-MM-DD) selects an earlier release of the same or another year, for example the first preliminary estimate of a quarter instead of the second.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "release_date": {
+          "type": "string",
+          "description": "ISO date of a published release (YYYY-MM-DD). Default: the newest release."
+        }
+      }
+    }
+  },
+  {
+    "name": "jp_gdp_series",
+    "description": "Dated quarterly rows of Japan's GDP and its expenditure components from the Cabinet Office (Government of Japan), from January-March 1994, for one release. Choose measure real or nominal and basis qoq (quarter-on-quarter %), annualized (quarter-on-quarter %, annualized), yoy (year-on-year %, original series), amount (billion yen, chained 2020 yen for real), or contribution_qoq / contribution_annualized / contribution_yoy (percentage points of GDP growth). adjustment is seasonally_adjusted or original and is fixed by the basis except for amount. from/to are quarters such as 2025-Q3 (default: the last 8 quarters). Returns the release date and stage (first or second preliminary), the unit and one values object per quarter keyed by component; unavailable cells are null. Honest limit: a preliminary estimate is revised and seasonally adjusted history changes at each release; expenditure approach only. A range with no quarters returns no_match=true with the available range, which is different from a read failure (an error).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "measure": {
+          "type": "string",
+          "enum": [
+            "real",
+            "nominal"
+          ],
+          "description": "Real (chained 2020 yen) or nominal. Default real."
+        },
+        "basis": {
+          "type": "string",
+          "enum": [
+            "qoq",
+            "annualized",
+            "yoy",
+            "amount",
+            "contribution_qoq",
+            "contribution_annualized",
+            "contribution_yoy"
+          ],
+          "description": "What the numbers are. Default qoq."
+        },
+        "adjustment": {
+          "type": "string",
+          "enum": [
+            "seasonally_adjusted",
+            "original"
+          ],
+          "description": "Series. Only choosable for basis amount (default seasonally_adjusted)."
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Keep components whose name contains any of these words (case-insensitive), e.g. [\"GDP\",\"Exports\"]. Default all."
+        },
+        "from": {
+          "type": "string",
+          "description": "First quarter, e.g. 2025-Q1 or 2025."
+        },
+        "to": {
+          "type": "string",
+          "description": "Last quarter, e.g. 2026-Q3 or 2026."
+        },
+        "release_date": {
+          "type": "string",
+          "description": "ISO date of a published release. Default: the newest release."
+        }
+      }
+    }
+  },
+  {
+    "name": "jp_gdp_releases",
+    "description": "Lists the Cabinet Office (Government of Japan) quarterly GDP releases for a year, newest first: release date, quarter covered, and whether each is the first or second preliminary estimate. Use it to find which estimates exist for a quarter and their release dates before asking jp_gdp_latest or jp_gdp_series for a specific one. Default year: the newest year with releases. An empty list for a year the publisher has no page for is returned with no_match=true and the years that are published.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": "number",
+          "description": "Release year, e.g. 2026. Default: newest."
+        }
+      }
+    }
+  }
+]
